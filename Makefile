@@ -1,7 +1,6 @@
-
 # ============= REPRODUCTIBILITY AND HARDENING =========================================
 SHELL := /bin/bash
-SHELLFLAGS := -eu -o pipefail -c
+.SHELLFLAGS := -eu -o pipefail -c
 # ============ COLOR ANSI ==============================
 INFO_COLOR := \033[36;1m
 WARNING_COLOR := \033[33;1m
@@ -13,15 +12,24 @@ ANSIBLE_DIR := ansible
 TF_DIR := terraform
 # =====================================================
 
-.PHONY: help terraform git
+.PHONY: help terraform git lint secrets clean ansible.play tf.init tf.plan tf.build
 .DEFAULT_GOAL := help
 
 help: ## shows this help
 	@grep -E "^[a-z0-9A-Z._-]+:.*?## .*$$" $(MAKEFILE_LIST) |\
 	 sort | awk 'BEGIN {FS=":.*?##"} {printf "$(INFO_COLOR)%-20s$(RESET_COLOR)%s\n", $$1, $$2}'
 
+lint: ## runs pre-commit linters
+	@pre-commit run --all-files
+
+secrets: ## detects secrets with gitleaks
+	@gitleaks detect --source . --verbose
+
+clean: ## cleans temporary and build files
+	@rm -rf .terraform *.tfstate *.tfstate.* *.log
+
 ansible: ## show ansible version
-	@ansible --version 
+	@ansible --version
 
 terraform: ## shows terraform version
 	@terraform -v

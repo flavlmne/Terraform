@@ -1,0 +1,12 @@
+# Set default behavior to automatic text conversion and LF line endings
+* text=auto eol=lf
+
+# Force specific filetypes to text with LF
+*.sh text eol=lf
+*.tf text eol=lf
+*.tfvars text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+Makefile text eol=lf
