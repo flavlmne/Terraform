@@ -7,7 +7,7 @@ if [ ! -d ".git" ]; then
     git init
     git add .
     git commit -m "feat/first-commit"
-    git remote add origin git@github.com:$(git config user.name)/terraform-v1.git 
+    git remote add origin git@github.com:flavlmne/Terraform.git 
     git remote -v
 else 
     display_msg "⚠️ Already a git repo" warning  # $1="Already a git repo" $2=info
