@@ -1,12 +1,53 @@
 # Set default behavior to automatic text conversion and LF line endings
 * text=auto eol=lf
 
-# Force specific filetypes to text with LF
+# Shell scripts
 *.sh text eol=lf
+*.bash text eol=lf
+*.zsh text eol=lf
+
+# Infrastructure & Configuration files
 *.tf text eol=lf
+*.hcl text eol=lf
 *.tfvars text eol=lf
+*.tfvars.example text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
-*.md text eol=lf
 *.json text eol=lf
+*.toml text eol=lf
+*.ini text eol=lf
+*.conf text eol=lf
+*.env* text eol=lf
+
+# Web frontend files
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+
+# Documentation & Build files
+*.md text eol=lf
+*.txt text eol=lf
 Makefile text eol=lf
+Dockerfile text eol=lf
+.editorconfig text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.pre-commit-config.yaml text eol=lf
+
+# Windows scripts (require CRLF)
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files (preserve raw bytes, no line ending conversion)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar.gz binary
+*.tgz binary
+*.gz binary

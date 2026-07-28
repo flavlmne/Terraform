@@ -1,8 +1,8 @@
 # Exemple de fichier de variables Terraform (À copier vers terraform.tfvars)
 aws_default_region        = "us-east-1"
-default_ubuntu_ami        = "ami-0446f93cefa2981e5"
-default_vpc_id            = "vpc-0d52b82865c0ed086"
-default_public_subnet_id  = "subnet-080466c956ef16d82"
+default_ubuntu_ami        = "ami-0000000000000000"
+default_vpc_id            = "vpc-00000000000000000"
+default_public_subnet_id  = "subnet-0000000000000000"
 default_instance_type     = "t2.micro"
-default_security_group_id = "sg-07f0ad52f78074f02"
+default_security_group_id = "sg-0000000000000000"
 key_name                  = "vockey"
