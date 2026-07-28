@@ -10,6 +10,7 @@ id_*
 *.tfstate
 *.tfstate.*
 *.tfvars
+*.lock.hcl
 
 # System / OS files
 .DS_Store
