@@ -1,0 +1,15 @@
+---
+- name: Create files
+  hosts: localhost
+  tasks:
+    - name: Create file
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/../../{{item}}"
+        state: touch
+      loop:
+        - "index.html"
+        - "styles.css"
+        - "main.js"
+
+#ansible-playbook playbook.yml -i inventory.ini
+...

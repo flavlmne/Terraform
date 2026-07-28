@@ -1,0 +1,16 @@
+# Local SSH Keys and Credentials
+flav
+flav.pub
+*.pem
+*.pub
+id_*
+
+# Terraform local files
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# System / OS files
+.DS_Store
+*.log
