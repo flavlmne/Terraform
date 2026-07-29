@@ -67,3 +67,21 @@ jobs:
 
       - name: Check formatting and validate configuration
         run: make tf.check
+
+  trivy:
+    name: Infrastructure security scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+
+      - name: Scan Terraform configuration with Trivy
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: config
+          scan-ref: terraform
+          hide-progress: true
+          format: table
+          severity: HIGH,CRITICAL
+          exit-code: "1"
