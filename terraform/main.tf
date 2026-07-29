@@ -9,6 +9,3 @@ resource "aws_instance" "flav_webserver" {
   key_name               = var.key_name
   vpc_security_group_ids = [var.default_security_group_id]
 }
-
-
-

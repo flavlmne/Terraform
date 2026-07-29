@@ -13,7 +13,7 @@ TF_DIR := terraform
 TF_CHG_DIR := terraform -chdir=$(TF_DIR)
 # =====================================================
 
-.PHONY: help terraform git lint secrets clean ansible.play tf.init tf.plan tf.build tf.pipe
+.PHONY: help terraform git lint secrets clean ansible.play tf.init tf.plan tf.build tf.check tf.pipe
 .DEFAULT_GOAL := help
 
 help: ## shows this help
@@ -46,6 +46,11 @@ tf.init: ## initializes terraform
 
 tf.plan: ## terraform plan
 	@terraform -chdir=$(TF_DIR) plan
+
+tf.check: ## verifies Terraform formatting and configuration without cloud credentials
+	@terraform -chdir=$(TF_DIR) fmt -check -recursive
+	@terraform -chdir=$(TF_DIR) init -backend=false -input=false
+	@terraform -chdir=$(TF_DIR) validate -no-color
 
 tf.build: ## terraform build
 	@terraform -chdir=$(TF_DIR) apply -auto-approve
