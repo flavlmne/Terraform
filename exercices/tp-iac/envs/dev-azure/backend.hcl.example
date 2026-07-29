@@ -1,0 +1,4 @@
+resource_group_name  = "rg-tp-iac-state"
+storage_account_name = "remplacerparunnomunique"
+container_name       = "tfstate"
+key                  = "dev-azure/terraform.tfstate"
