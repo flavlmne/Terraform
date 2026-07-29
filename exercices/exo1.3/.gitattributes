@@ -1,0 +1,5 @@
+# Normalise tout en LF dans le dépôt ; Git décide du rendu local
+* text=auto eol=lf
+
+# Fichiers qui DOIVENT être en LF
+*.sh text eol=lf
