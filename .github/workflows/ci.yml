@@ -36,6 +36,36 @@ jobs:
       - name: Run repository checks
         run: make lint
 
+  scripts:
+    name: Bash syntax
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+
+      - name: Check Bash scripts syntax
+        run: find scripts -type f -name '*.sh' -print0 | xargs -0 -r bash -n
+
+  ansible:
+    name: Ansible syntax
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install Ansible
+        run: python -m pip install --disable-pip-version-check ansible-core
+
+      - name: Check playbook syntax
+        run: ansible-playbook --syntax-check ansible/localhost/playbook.yml
+
   secrets:
     name: Secret scan
     runs-on: ubuntu-latest
