@@ -1,0 +1,3 @@
+bucket = "remplacer-par-un-nom-de-bucket-unique"
+key    = "tp-iac/dev-aws/terraform.tfstate"
+region = "eu-west-3"

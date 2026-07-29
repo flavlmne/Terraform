@@ -10,9 +10,10 @@ RESET_COLOR := \033[0m
 GIT_DIR := scripts/git
 ANSIBLE_DIR := ansible
 TF_DIR := terraform
+TF_CHG_DIR := terraform -chdir=$(TF_DIR)
 # =====================================================
 
-.PHONY: help terraform git lint secrets clean ansible.play tf.init tf.plan tf.build
+.PHONY: help terraform git lint secrets clean ansible.play tf.init tf.plan tf.build tf.check tf.pipe
 .DEFAULT_GOAL := help
 
 help: ## shows this help
@@ -46,5 +47,26 @@ tf.init: ## initializes terraform
 tf.plan: ## terraform plan
 	@terraform -chdir=$(TF_DIR) plan
 
+tf.check: ## verifies Terraform formatting and configuration without cloud credentials
+	@terraform -chdir=$(TF_DIR) fmt -check -recursive
+	@terraform -chdir=$(TF_DIR) init -backend=false -input=false
+	@terraform -chdir=$(TF_DIR) validate -no-color
+
 tf.build: ## terraform build
 	@terraform -chdir=$(TF_DIR) apply -auto-approve
+
+tf.normalize:
+	$(TF_CHG_DIR) fmt
+	tflint --chdir=$(TF_DIR)
+	echo -e "${INFO_COLOR}Terraform files normalized${RESET_COLOR}"
+
+tf.pipe:
+	@$(TF_CHG_DIR) validate
+	@$(TF_CHG_DIR) plan --out tfplan
+	@$(TF_CHG_DIR) show -json tfplan > $(TF_DIR)/tfplan.json
+	trivy config $(TF_DIR)/tfplan.json
+	echo -e "${INFO_COLOR}Terraform pipe complete${RESET_COLOR}"
+
+tf.apply:
+	@$(TF_CHG_DIR) apply --auto-approve
+	echo -e "${INFO_COLOR}Terraform apply complete${RESET_COLOR}"

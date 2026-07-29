@@ -5,12 +5,17 @@ flav.pub
 *.pub
 id_*
 
+
 # Terraform local files
 **/.terraform/
 *.tfstate
 *.tfstate.*
 *.tfvars
 *.lock.hcl
+*.tfplan
+*.tfplan.json
+tfplan
+tfplan.json
 
 # System / OS files
 .DS_Store
