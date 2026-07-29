@@ -8,11 +8,6 @@ variable "default_ubuntu_ami" {
   description = "AMI Ubuntu 22.04 LTS"
 }
 
-variable "default_vpc_id" {
-  type        = string
-  description = "ID du VPC AWS par défaut"
-}
-
 variable "default_public_subnet_id" {
   type        = string
   description = "ID du sous-réseau public"

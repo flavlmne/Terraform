@@ -1,10 +1,3 @@
-# Rapport TP 1 — Un dépôt IaC sain, de bout en bout
-
-**Auteur :** Flavien Lemoine
-**Dépôt GitHub :** [https://github.com/flavlmne/Terraform](https://github.com/flavlmne/Terraform)
-
----
-
 ## Réponses aux questions de synthèse
 
 ### 1. Pourquoi `--no-verify` fonctionne-t-il, et quelle est la seule parade réellement efficace ?
