@@ -8,4 +8,12 @@ resource "aws_instance" "flav_webserver" {
   instance_type          = var.default_instance_type
   key_name               = var.key_name
   vpc_security_group_ids = [var.default_security_group_id]
+
+  metadata_options {
+    http_tokens = "required"
+  }
+
+  root_block_device {
+    encrypted = true
+  }
 }

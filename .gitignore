@@ -12,6 +12,10 @@ id_*
 *.tfstate.*
 *.tfvars
 *.lock.hcl
+*.tfplan
+*.tfplan.json
+tfplan
+tfplan.json
 
 # System / OS files
 .DS_Store
