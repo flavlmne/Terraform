@@ -1,35 +1,86 @@
-.PHONY: help init validate fmt plan apply destroy clean
+.PHONY: help init validate fmt fmt-check plan apply apply-auto destroy destroy-auto output show clean lint sec
 
-# Répertoire contenant le code Terraform
-DIR = envs/dev-aws
+# ── Variables ─────────────────────────────────────────────────────────────────
+# Répertoire cible (modifiable à la volée : make plan DIR=envs/prod)
+DIR ?= envs/dev-aws
 
-help: ## Affiche l'aide
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
+# Fichier de plan (localisé dans le répertoire d'exécution)
+PLAN_FILE = tfplan
 
-init: ## Initialise Terraform (télécharge les providers)
+# Couleurs pour le help
+CYAN := \033[36m
+RESET := \033[0m
+
+# ── Commandes par défaut ──────────────────────────────────────────────────────
+help: ## Affiche cette aide avec la liste des commandes disponibles
+	@echo "Utilisation: make <commande> [DIR=chemin/vers/env]"
+	@echo ""
+	@echo "Commandes disponibles :"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "$(CYAN)%-18s$(RESET) %s\n", $$1, $$2}'
+
+# ── Commandes Terraform ───────────────────────────────────────────────────────
+init: ## Télécharge les providers et initialise le backend
+	@echo "=> Initialisation de Terraform dans $(DIR)..."
 	terraform -chdir=$(DIR) init
 
-validate: ## Valide la syntaxe des fichiers Terraform
+init-upgrade: ## Met à jour les versions des providers et modules
+	@echo "=> Mise à jour des providers Terraform..."
+	terraform -chdir=$(DIR) init -upgrade
+
+validate: ## Vérifie la syntaxe et la validité du code HCL
+	@echo "=> Validation du code Terraform..."
 	terraform -chdir=$(DIR) validate
 
-fmt: ## Formate le code Terraform
+fmt: ## Formate automatiquement tous les fichiers .tf du projet
+	@echo "=> Formatage du code Terraform..."
 	terraform -chdir=$(DIR) fmt -recursive
 
-plan: ## Génère et affiche le plan d'exécution
-	terraform -chdir=$(DIR) plan -out=tfplan
+fmt-check: ## Vérifie si le code respecte le formatage (sans le modifier)
+	@echo "=> Vérification du formatage..."
+	terraform -chdir=$(DIR) fmt -check -recursive
 
-apply: ## Applique les changements (déploiement)
-	terraform -chdir=$(DIR) apply tfplan
+plan: ## Génère un plan d'exécution et le sauvegarde (tfplan)
+	@echo "=> Génération du plan Terraform..."
+	terraform -chdir=$(DIR) plan -out=$(PLAN_FILE)
 
-apply-auto: ## Applique les changements automatiquement (sans confirmation)
+apply: ## Applique le plan d'exécution précédemment généré
+	@echo "=> Déploiement de l'infrastructure..."
+	terraform -chdir=$(DIR) apply $(PLAN_FILE)
+
+apply-auto: ## Applique les changements automatiquement (DANGER : pas de confirmation)
+	@echo "=> Déploiement automatique en cours..."
 	terraform -chdir=$(DIR) apply -auto-approve
 
-destroy: ## Détruit toute l'infrastructure
+destroy: ## Calcule et demande confirmation pour détruire l'infrastructure
+	@echo "=> Demande de destruction de l'infrastructure..."
 	terraform -chdir=$(DIR) destroy
 
-clean: ## Supprime les fichiers locaux générés par Terraform
+destroy-auto: ## Détruit l'infrastructure automatiquement (DANGER : pas de confirmation)
+	@echo "=> Destruction automatique en cours..."
+	terraform -chdir=$(DIR) destroy -auto-approve
+
+output: ## Affiche les variables de sortie (outputs) de l'état actuel
+	@echo "=> Outputs Terraform :"
+	terraform -chdir=$(DIR) output
+
+show: ## Affiche l'état complet (tfstate) au format lisible
+	terraform -chdir=$(DIR) show
+
+# ── Qualité & Sécurité (Nécessite des outils tiers) ───────────────────────────
+lint: ## Analyse le code avec tflint (nécessite tflint installé)
+	@echo "=> Analyse avec TFLint..."
+	tflint --chdir=$(DIR)
+
+sec: ## Analyse la sécurité avec tfsec (nécessite tfsec installé)
+	@echo "=> Analyse avec TFSec..."
+	tfsec $(DIR)
+
+# ── Nettoyage ─────────────────────────────────────────────────────────────────
+clean: ## Supprime le cache local Terraform (.terraform, .tfstate, tfplan)
+	@echo "=> Nettoyage des fichiers locaux..."
 	rm -rf $(DIR)/.terraform
 	rm -f $(DIR)/.terraform.lock.hcl
 	rm -f $(DIR)/terraform.tfstate
 	rm -f $(DIR)/terraform.tfstate.backup
-	rm -f $(DIR)/tfplan
+	rm -f $(DIR)/$(PLAN_FILE)
+	@echo "Nettoyage terminé."
