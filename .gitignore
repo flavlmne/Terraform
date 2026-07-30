@@ -1,0 +1,24 @@
+# ── Terraform ─────────────────────────────────────────────────────────────────
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfplan.json
+tfplan
+tfplan.json
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# ── Secrets & credentials ─────────────────────────────────────────────────────
+*.pem
+*.key
+id_*
+*.pub
+
+# ── System / OS ───────────────────────────────────────────────────────────────
+.DS_Store
+*.log
