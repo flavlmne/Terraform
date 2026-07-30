@@ -68,12 +68,13 @@ show: ## Affiche l'état complet (tfstate) au format lisible
 
 # ── Qualité & Sécurité (Nécessite des outils tiers) ───────────────────────────
 lint: ## Analyse le code avec tflint (nécessite tflint installé)
-	@echo "=> Analyse avec TFLint..."
-	tflint --chdir=$(DIR)
+	@echo "=> Initialisation et Analyse avec TFLint..."
+	@tflint --init
+	@tflint --chdir=$(DIR) && echo "✅ Aucun problème détecté par TFLint !"
 
 sec: ## Analyse la sécurité avec tfsec (nécessite tfsec installé)
 	@echo "=> Analyse avec TFSec..."
-	tfsec $(DIR)
+	@tfsec $(DIR) && echo "✅ Aucun problème de sécurité détecté par TFSec !"
 
 # ── Nettoyage ─────────────────────────────────────────────────────────────────
 clean: ## Supprime le cache local Terraform (.terraform, .tfstate, tfplan)
