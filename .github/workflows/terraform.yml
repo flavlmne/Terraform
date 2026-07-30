@@ -1,0 +1,43 @@
+name: Terraform CI
+
+on:
+  push:
+    branches: [ "TP2" ]
+  pull_request:
+    branches: [ "TP2" ]
+
+jobs:
+  terraform:
+    name: Terraform Validation
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./envs/dev-aws
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: "1.9.0"
+
+    - name: Terraform Format
+      id: fmt
+      run: terraform fmt -check -recursive
+      continue-on-error: true
+
+    - name: Terraform Init
+      id: init
+      run: terraform init -backend=false
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color -var="cidr_admin=0.0.0.0/0"
+      continue-on-error: true
