@@ -13,13 +13,13 @@ provider "aws" {
 
 # ──────────────────────────────────────────────────────────── Locals ───────
 locals {
-  prefixe = "${var.projet}-${var.environnement}"
+  prefixe = "${var.project}-${var.environment}"
 
   etiquettes = {
-    Projet      = var.projet
-    Environment = var.environnement
+    Projet      = var.project
+    Environment = var.environment
     ManagedBy   = "terraform"
-    Owner       = var.proprietaire
+    Owner       = var.owner
   }
 }
 
@@ -130,7 +130,7 @@ resource "aws_instance" "web" {
   instance_type          = var.instance_type
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.web.id]
-  key_name               = var.nom_cle_ssh
+  key_name               = var.ssh_key_name
 
   # ── Durcissement obligatoire ──────────────────────────────────────────────
   metadata_options {

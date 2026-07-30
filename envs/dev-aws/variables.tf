@@ -1,21 +1,21 @@
 # ──────────────────────────────────────────────────────────────── Projet ─────
-variable "projet" {
+variable "project" {
   description = "Nom du projet, utilisé comme préfixe de nommage."
   type        = string
 }
 
-variable "environnement" {
+variable "environment" {
   description = "Nom de l'environnement cible (dev, staging, prod)."
   type        = string
   default     = "dev"
 
   validation {
-    condition     = contains(["dev", "staging", "prod"], var.environnement)
-    error_message = "environnement doit valoir dev, staging ou prod."
+    condition     = contains(["dev", "staging", "prod"], var.environment)
+    error_message = "environment doit valoir dev, staging ou prod."
   }
 }
 
-variable "proprietaire" {
+variable "owner" {
   description = "Nom du propriétaire des ressources (étiquetage)."
   type        = string
 }
@@ -33,7 +33,7 @@ variable "cidr_admin" {
 }
 
 # ──────────────────────────────────────────────────────────── Instances ─────
-variable "nom_cle_ssh" {
+variable "ssh_key_name" {
   description = "Nom de la paire de clés SSH AWS (vockey pour Learner Lab)."
   type        = string
   default     = "vockey"
