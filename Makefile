@@ -76,6 +76,11 @@ sec: ## Analyse la sécurité avec tfsec (nécessite tfsec installé)
 	@echo "=> Analyse avec TFSec..."
 	@tfsec $(DIR) && echo "✅ Aucun problème de sécurité détecté par TFSec !"
 
+trivy: ## Analyse la sécurité et les vulnérabilités avec Trivy
+	@echo "=> Analyse avec Trivy..."
+	@trivy config $(DIR)
+
+
 # ── Nettoyage ─────────────────────────────────────────────────────────────────
 clean: ## Supprime le cache local Terraform (.terraform, .tfstate, tfplan)
 	@echo "=> Nettoyage des fichiers locaux..."
