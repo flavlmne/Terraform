@@ -56,12 +56,14 @@ jobs:
           github_token: ${{ github.token }}
         continue-on-error: true
 
-      - name: Run Trivy vulnerability scanner
+      - name: 🛡️ Trivy - Analyse complète (Vulnérabilités, Secrets, IaC)
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'config'
+          scan-type: 'fs'
+          scan-ref: '.'
+          scanners: 'vuln,secret,config'
           hide-progress: false
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
-          severity: 'CRITICAL,HIGH'
+          severity: 'HIGH,CRITICAL'
