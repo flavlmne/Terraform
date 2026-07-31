@@ -23,3 +23,8 @@ id_*
 .DS_Store
 *.log
 tp3.md
+
+# ── Variables and DB ─────────────────────────────────────────────────────────
+terraform.tfvars
+*.db
+*.sqlite3

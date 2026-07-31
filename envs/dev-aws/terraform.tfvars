@@ -1,4 +1,4 @@
-project       = "tp3-flav"
+project       = "tp2-flav"
 environment   = "dev"
 owner         = "flav"
 region        = "us-east-1"

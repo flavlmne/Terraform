@@ -1,0 +1,94 @@
+---
+
+- name: Install and start nginx web server
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Ensure nginx is installed
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
+    
+    - name: Ensure nginx is running and enabled on boot
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Ensure python3, pip, and venv are installed
+      ansible.builtin.apt:
+        name:
+          - python3
+          - python3-pip
+          - python3-venv
+        state: present
+        update_cache: yes
+
+    - name: Create backend directory
+      ansible.builtin.file:
+        path: /opt/fastapi-app
+        state: directory
+        owner: ubuntu
+        group: www-data
+        mode: '0755'
+
+    - name: Deploy backend files
+      ansible.builtin.copy:
+        src: backend/
+        dest: /opt/fastapi-app/
+        owner: ubuntu
+        group: www-data
+        mode: '0644'
+      notify: Reload systemd and restart fastapi
+
+    - name: Install Python requirements in virtualenv
+      ansible.builtin.pip:
+        requirements: /opt/fastapi-app/requirements.txt
+        virtualenv: /opt/fastapi-app/venv
+        virtualenv_command: python3 -m venv
+
+    - name: Setup FastAPI systemd service
+      ansible.builtin.copy:
+        src: backend/fastapi.service
+        dest: /etc/systemd/system/fastapi.service
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Reload systemd and restart fastapi
+
+    - name: Ensure FastAPI service is running and enabled
+      ansible.builtin.systemd:
+        name: fastapi
+        state: started
+        enabled: yes
+
+    - name: Deploy premium website directory
+      ansible.builtin.copy:
+        src: site/
+        dest: /var/www/html/
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Deploy custom Nginx config (Reverse Proxy)
+      ansible.builtin.copy:
+        src: backend/nginx_default.conf
+        dest: /etc/nginx/sites-available/default
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart nginx
+
+  handlers:
+    - name: Restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+
+    - name: Reload systemd and restart fastapi
+      ansible.builtin.systemd:
+        name: fastapi
+        state: restarted
+        daemon_reload: yes

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaBoule - Chargement...</title>
+    <!-- Utilisation de la police Inter pour un design très propre -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    
+    <!-- Header (Glassmorphism) -->
+    <header class="header">
+        <div class="logo" id="siteLogo">
+            <span class="logo-icon">⚪</span> <span id="siteTitle">MaBoule</span>
+        </div>
+        <nav class="nav-links" id="mainNav">
+            <!-- Rempli par l'API -->
+        </nav>
+        <div class="cart-icon" id="cartBtn">
+            🛒 Panier <span id="cartCount" class="cart-badge">0</span>
+        </div>
+    </header>
+
+    <!-- App Container -->
+    <main id="app">
+        <!-- Loader par défaut -->
+        <div class="loader-container">
+            <div class="spinner"></div>
+            <p>Initialisation de l'expérience MaBoule...</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p id="siteFooterText">&copy; 2026 MaBoule.</p>
+        <div id="apiStatus" style="font-size: 0.8rem; margin-top: 10px; color: #777;"></div>
+    </footer>
+
+    <!-- Modal Panier (Glassmorphism) -->
+    <div id="cartModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Votre Panier</h2>
+                <span class="close-modal" id="closeCartBtn">&times;</span>
+            </div>
+            <div class="modal-body" id="cartItemsList">
+                <p>Votre panier est vide.</p>
+            </div>
+            <div class="modal-footer">
+                <div class="cart-total">Total: <span id="cartTotalPrice">0.00</span> €</div>
+                <button class="btn btn-primary" id="checkoutBtn" disabled>Payer</button>
+            </div>
+            <div id="checkoutStatus" style="display: none; text-align: center; margin-top: 1rem; font-weight: 600;"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Article ajouté !</div>
+
+    <!-- Script Application -->
+    <script src="js/script.js"></script>
+</body>
+</html>
