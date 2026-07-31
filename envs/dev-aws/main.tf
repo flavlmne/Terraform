@@ -48,6 +48,7 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.principal.id
   cidr_block              = "10.20.1.0/24"
   availability_zone       = "${var.region}a"
+  # trivy:ignore:avd-aws-0164
   map_public_ip_on_launch = true
 
   tags = { Name = "${local.prefixe}-public-a" }
@@ -98,6 +99,7 @@ resource "aws_security_group" "web" {
   }
 
   # ── Sortie libre (mises à jour) ──────────────────────────────────────────
+  # trivy:ignore:avd-aws-0104
   egress {
     description = "Sortie libre (mises a jour)"
     from_port   = 0
