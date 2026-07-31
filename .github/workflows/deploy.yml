@@ -29,15 +29,15 @@ jobs:
           terraform_version: "1.9.0"
 
       - name: 🚀 Terraform Init
-        working-directory: ./TP2/envs/dev-aws
+        working-directory: ./envs/dev-aws
         run: terraform init
 
       - name: 🌍 Terraform Apply
-        working-directory: ./TP2/envs/dev-aws
+        working-directory: ./envs/dev-aws
         run: terraform apply -auto-approve
 
       - name: 🔍 Récupération de l'IP du serveur
-        working-directory: ./TP2/envs/dev-aws
+        working-directory: ./envs/dev-aws
         id: get_ip
         run: |
           EC2_IP=$(terraform output -raw ip_publique)
@@ -58,7 +58,7 @@ jobs:
           echo -e "Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile /dev/null" > ~/.ssh/config
 
       - name: ⚙️ Configuration du serveur avec Ansible
-        working-directory: ./TP2/ansible
+        working-directory: ./ansible
         env:
           ANSIBLE_HOST_KEY_CHECKING: "False"
         run: |
