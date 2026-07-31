@@ -3,7 +3,7 @@ name: MaBoule CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - TP2
   workflow_dispatch:
 
 jobs:
