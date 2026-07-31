@@ -11,35 +11,39 @@ jobs:
     name: Terraform Validation
     runs-on: ubuntu-latest
     
-    defaults:
-      run:
-        working-directory: ./envs/dev-aws
-
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
+
+    - name: ☁️ Configuration des identifiants AWS
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: us-east-1
 
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
+      uses: hashicorp/setup-terraform@v4
       with:
-        terraform_version: "1.9.0"
+        terraform_version: "1.11.0"
 
     - name: Terraform Format
       id: fmt
-      run: terraform fmt -check -recursive
+      run: make fmt-check
       continue-on-error: true
 
     - name: Terraform Init
       id: init
-      run: terraform init -backend=false
+      run: make init
 
     - name: Terraform Validate
       id: validate
-      run: terraform validate -no-color
+      run: make validate
 
     - name: Terraform Plan
       id: plan
-      run: terraform plan -no-color -var="cidr_admin=0.0.0.0/0"
+      run: make plan
       continue-on-error: true
 
   security:

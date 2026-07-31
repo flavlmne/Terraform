@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: 📥 Récupération du code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: ☁️ Configuration des identifiants AWS
         uses: aws-actions/configure-aws-credentials@v4
@@ -21,14 +21,12 @@ jobs:
           aws-region: us-east-1
 
       - name: 🏗️ Installation de Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: "1.11.0"
 
       - name: 🚀 Terraform Init
-        working-directory: ./envs/dev-aws
-        run: terraform init
+        run: make init
 
       - name: 💣 Terraform Destroy
-        working-directory: ./envs/dev-aws
-        run: terraform destroy -auto-approve
+        run: make destroy-auto
